@@ -76,23 +76,19 @@ export class AppComponent implements OnInit {
     }
   }
 
+
   onSubmit() {
-
-
     const customer: Customer = this.customerForm.value;
     if (this.isCustomerUnique(customer) && this.isEmailUnique(customer.email)) {
       this.saveCustomer(customer);
-
-
     }
-
   }
 
 
   saveCustomer(customer: Customer) {
-    const customers: Customer[] = JSON.parse(localStorage.getItem('customers')) || [];
+    const customers: Customer[] = this.localStorageService.getItem('customers')
     customers.push(customer);
-    localStorage.setItem('customers', JSON.stringify(customers));
+    this.localStorageService.addItem('customers', customers)
     this.customerForm.reset();
   }
 
@@ -101,9 +97,7 @@ export class AppComponent implements OnInit {
 
   isCustomerUnique(customer: Customer): boolean {
 
-    const customers: Customer[] = JSON.parse(localStorage.getItem('customers')) || [];
-
-    this.customers
+    const customers: Customer[] = this.localStorageService.getItem('customers')
     return !customers.some(c => c.firstName === customer.firstName && c.lastName === customer.lastName && c.dateOfBirth === customer.dateOfBirth);
   }
 
@@ -111,15 +105,15 @@ export class AppComponent implements OnInit {
 
 
   isEmailUnique(email: string): boolean {
-    this.getCustomersListFromLocalStorage()
-    return !this.customers.some(c => c.email === email);
+    const customers: Customer[] = this.localStorageService.getItem('customers')
+    return !customers.some(c => c.email === email);
   }
 
 
 
   clearLocaldata() {
     // localStorage.setItem('customers', '');
-    localStorage.removeItem('customers')
+    this.localStorageService.removeItem('customers')
     this.customers = [];
   }
 }

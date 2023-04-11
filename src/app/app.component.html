@@ -2,3 +2,38 @@
 <div (click)="addUser2()">user2</div>
 <div (click)="showLocal()">showlocal</div>
 <div (click)="onSubmit()">submit</div>
+
+
+<form [formGroup]="customerForm">
+    <div>
+      <label>
+        FirstName:
+        <input formControlName="firstName" placeholder="Your firstName">
+      </label>
+    </div>
+    <div>
+      <label>
+        Lastname:
+        <input formControlName="lastName" placeholder="Your lastName">
+      </label>
+    </div>
+    <div>
+      <label>
+        Phone:
+        <input formControlName="phoneNumber" placeholder="Your phoneNumber">
+      </label>
+    </div>
+    <div>
+      <label>
+        Email:
+        <input formControlName="email" placeholder="Your email">
+      </label>
+    </div>
+    <div>
+      <label>
+        Bank Account Number:
+        <input formControlName="bankAccountNumber" placeholder="Your bankAccountNumber">
+      </label>
+    </div>
+    <button  (click)="onSubmit()" type="submit">Send</button>
+  </form>
