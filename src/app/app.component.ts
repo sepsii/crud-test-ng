@@ -34,8 +34,33 @@ export class AppComponent implements OnInit {
 
 
   }
+addUser1(){
+  this.customerForm.reset()
+  this.customerForm.controls['phoneNumber'].setValue('202-456-1234')
+  this.customerForm.controls['firstName'].setValue('setare')
+  this.customerForm.controls['lastName'].setValue('sharifi')
+  this.customerForm.controls['email'].setValue('setare@gmail.com')
+  this.customerForm.controls['bankAccountNumber'].setValue('919414470')
+  console.log('user',this.customerForm);
+  
+}
 
+addUser2(){
+  this.customerForm.reset()
+  this.customerForm.controls['phoneNumber'].setValue('202-456-1414')
+  this.customerForm.controls['firstName'].setValue('sep')
+  this.customerForm.controls['lastName'].setValue('sharifi')
+  this.customerForm.controls['email'].setValue('sepehr@gmail.com')
+  this.customerForm.controls['bankAccountNumber'].setValue('919414470')
+  console.log('user',this.customerForm);
+  
+}
+showLocal(){
+  let localStorageItem = localStorage.getItem('customers');
+  console.log('local items',localStorageItem);
+  
 
+}
 
 
   getCustomersListFromLocalStorage() {
@@ -52,21 +77,15 @@ export class AppComponent implements OnInit {
 
   onSubmit() {
     // this.clearLocaldata()
-    this.tt()
+    // this.tt()
     console.log();
 
     const customer: Customer = this.customerForm.value;
-    // this.customerForm.controls['PhoneNumber'].setErrors(PhoneNumberValidator)
-
-
-
     if (this.isCustomerUnique(customer) && this.isEmailUnique(customer.email)) {
-
-
-
       this.saveCustomer(customer);
+
+
     }
-    console.log('local', JSON.parse(localStorage.getItem('customers')));
 
   }
 
@@ -82,12 +101,12 @@ export class AppComponent implements OnInit {
   saveCustomer(customer: Customer) {
     const customers: Customer[] = JSON.parse(localStorage.getItem('customers')) || [];
     customers.push(customer);
-
-
-
     localStorage.setItem('customers', JSON.stringify(customers));
     this.customerForm.reset();
   }
+
+
+
 
   isCustomerUnique(customer: Customer): boolean {
 
@@ -97,10 +116,16 @@ export class AppComponent implements OnInit {
     return !customers.some(c => c.firstName === customer.firstName && c.lastName === customer.lastName && c.dateOfBirth === customer.dateOfBirth);
   }
 
+
+
+
   isEmailUnique(email: string): boolean {
     this.getCustomersListFromLocalStorage()
     return !this.customers.some(c => c.email === email);
   }
+
+
+
   clearLocaldata() {
     // localStorage.setItem('customers', '');
     localStorage.removeItem('customers')
