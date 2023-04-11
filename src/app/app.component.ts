@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Customer } from './models/customer.model';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import { PhoneNumberValidator } from './validators/phone-number-validator';
+import { LocalStorageService } from './services/localstorage-service.service';
 
 
 @Component({
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit {
   localStorageCustomersList: Customer[]
   customerForm: FormGroup;
   customers: Customer[]
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private localStorageService: LocalStorageService) {
+
     this.customerForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -31,36 +33,35 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.clearLocaldata()
     this.getCustomersListFromLocalStorage()
-
-
   }
-addUser1(){
-  this.customerForm.reset()
-  this.customerForm.controls['phoneNumber'].setValue('202-456-1234')
-  this.customerForm.controls['firstName'].setValue('setare')
-  this.customerForm.controls['lastName'].setValue('sharifi')
-  this.customerForm.controls['email'].setValue('setare@gmail.com')
-  this.customerForm.controls['bankAccountNumber'].setValue('919414470')
-  console.log('user',this.customerForm);
-  
-}
 
-addUser2(){
-  this.customerForm.reset()
-  this.customerForm.controls['phoneNumber'].setValue('202-456-1414')
-  this.customerForm.controls['firstName'].setValue('sep')
-  this.customerForm.controls['lastName'].setValue('sharifi')
-  this.customerForm.controls['email'].setValue('sepehr@gmail.com')
-  this.customerForm.controls['bankAccountNumber'].setValue('919414470')
-  console.log('user',this.customerForm);
-  
-}
-showLocal(){
-  let localStorageItem = localStorage.getItem('customers');
-  console.log('local items',localStorageItem);
-  
 
-}
+  addUser1() {
+    this.customerForm.reset()
+    this.customerForm.controls['phoneNumber'].setValue('202-456-1234')
+    this.customerForm.controls['firstName'].setValue('setare')
+    this.customerForm.controls['lastName'].setValue('sharifi')
+    this.customerForm.controls['email'].setValue('setare@gmail.com')
+    this.customerForm.controls['bankAccountNumber'].setValue('919414470')
+    console.log('user', this.customerForm);
+  }
+
+
+  addUser2() {
+    this.customerForm.reset()
+    this.customerForm.controls['phoneNumber'].setValue('202-456-1414')
+    this.customerForm.controls['firstName'].setValue('sep')
+    this.customerForm.controls['lastName'].setValue('sharifi')
+    this.customerForm.controls['email'].setValue('sepehr@gmail.com')
+    this.customerForm.controls['bankAccountNumber'].setValue('919414470')
+    console.log('user', this.customerForm);
+  }
+
+
+  showLocal() {
+    let localStorageItem = localStorage.getItem('customers');
+    console.log('local items', localStorageItem);
+  }
 
 
   getCustomersListFromLocalStorage() {
@@ -76,9 +77,7 @@ showLocal(){
   }
 
   onSubmit() {
-    // this.clearLocaldata()
-    // this.tt()
-    console.log();
+
 
     const customer: Customer = this.customerForm.value;
     if (this.isCustomerUnique(customer) && this.isEmailUnique(customer.email)) {
@@ -89,14 +88,6 @@ showLocal(){
 
   }
 
-  tt() {
-    this.customerForm.controls['phoneNumber'].setValue('202-456-1414')
-    this.customerForm.controls['firstName'].setValue('sep')
-    this.customerForm.controls['lastName'].setValue('919414470')
-    this.customerForm.controls['email'].setValue('ser@gmail.com')
-    this.customerForm.controls['bankAccountNumber'].setValue('919414470')
-
-  }
 
   saveCustomer(customer: Customer) {
     const customers: Customer[] = JSON.parse(localStorage.getItem('customers')) || [];
