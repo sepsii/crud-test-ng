@@ -31,8 +31,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.clearLocaldata()
-    this.getCustomersListFromLocalStorage()
   }
 
 
@@ -64,19 +62,6 @@ export class AppComponent implements OnInit {
   }
 
 
-  getCustomersListFromLocalStorage() {
-    // debugger
-    let localStorageItem = localStorage.getItem('customers');
-
-    if (localStorageItem && localStorageItem != '') {
-      this.customers = JSON.parse(localStorageItem);
-    }
-    else {
-      this.customers = []
-    }
-  }
-
-
   onSubmit() {
     const customer: Customer = this.customerForm.value;
     this.localStorageService.addItem(customer)
@@ -84,19 +69,8 @@ export class AppComponent implements OnInit {
 
 
 
-  saveCustomer(customer: Customer) {
-    this.localStorageService.addItem(customer)
-    this.customerForm.reset();
-  }
 
 
 
 
-
-
-  clearLocaldata() {
-    // localStorage.setItem('customers', '');
-    this.localStorageService.deleteAllStorageItems('customers')
-    this.customers = [];
-  }
 }
