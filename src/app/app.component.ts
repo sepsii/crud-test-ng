@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.clearLocaldata()
+    // this.clearLocaldata()
     this.getCustomersListFromLocalStorage()
   }
 
@@ -79,41 +79,24 @@ export class AppComponent implements OnInit {
 
   onSubmit() {
     const customer: Customer = this.customerForm.value;
-    if (this.isCustomerUnique(customer) && this.isEmailUnique(customer.email)) {
-      this.saveCustomer(customer);
-    }
+    this.localStorageService.addItem(customer)
   }
 
 
+
   saveCustomer(customer: Customer) {
-    const customers: Customer[] = this.localStorageService.getItem('customers')
-    customers.push(customer);
-    this.localStorageService.addItem('customers', customers)
+    this.localStorageService.addItem(customer)
     this.customerForm.reset();
   }
 
 
 
 
-  isCustomerUnique(customer: Customer): boolean {
-
-    const customers: Customer[] = this.localStorageService.getItem('customers')
-    return !customers.some(c => c.firstName === customer.firstName && c.lastName === customer.lastName && c.dateOfBirth === customer.dateOfBirth);
-  }
-
-
-
-
-  isEmailUnique(email: string): boolean {
-    const customers: Customer[] = this.localStorageService.getItem('customers')
-    return !customers.some(c => c.email === email);
-  }
-
 
 
   clearLocaldata() {
     // localStorage.setItem('customers', '');
-    this.localStorageService.removeItem('customers')
+    this.localStorageService.deleteAllStorageItems('customers')
     this.customers = [];
   }
 }
