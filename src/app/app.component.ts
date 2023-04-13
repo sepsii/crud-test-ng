@@ -13,11 +13,11 @@ import { LocalStorageService } from './services/localstorage-service.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  // customerForm: FormGroup;
-  title = 'hello'
-  localStorageCustomersList: Customer[]
+  AllCustomers: Customer[]
   customerForm: FormGroup;
-  customers: Customer[]
+  customers: Customer[];
+  playerName: string;
+
   constructor(private formBuilder: FormBuilder, private localStorageService: LocalStorageService) {
 
     this.customerForm = this.formBuilder.group({
@@ -31,6 +31,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.AllCustomers = this.localStorageService.getAllLocalStorageItems('customers')
+    this.localStorageService.itemSubject.subscribe(res => {
+      this.AllCustomers = res
+    })
   }
 
 
@@ -57,7 +61,7 @@ export class AppComponent implements OnInit {
 
 
   showLocal() {
-    let localStorageItem = localStorage.getItem('customers');
+    const localStorageItem = localStorage.getItem('customers');
     console.log('local items', localStorageItem);
   }
 
@@ -67,10 +71,22 @@ export class AppComponent implements OnInit {
     this.localStorageService.addItem(customer)
   }
 
+  clearAll() {
+    this.localStorageService.deleteAllStorageItems('customers')
+  }
 
 
 
+  deleteItem(customer: Customer) {
+    this.localStorageService.deleteItem(customer.email)
+  }
 
 
+  test1() {
+    console.log('playername',this.playerName);
+    
+    return this.playerName;
+
+  }
 
 }

@@ -1,58 +1,72 @@
 import { Injectable } from '@angular/core';
 import { Customer } from '../models/customer.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
-  private customers: Customer[] = [];
+  // private customers: Customer[] = [];
 
-  constructor() { }
+  constructor() { 
+  }
+  itemSubject = new BehaviorSubject(this.item)
 
-  
+  set item(customers) {
+    this.itemSubject.next(customers);
+    localStorage.setItem("customers", JSON.stringify(customers));
+  }
+
+  get item() {
+    const item = localStorage.getItem('customers');
+    if (item) {
+      return JSON.parse(item);
+    } else {
+      return [];
+    }  }
+
+
+
+
   addItem(customer: Customer) {
-    const customers: Customer[] = this.getAllLocalStorageItems('customers')
+
+    const customers= this.item
     if (this.isEmailUnique(customer.email) && this.isItemUnique(customer)) {
       customers.push(customer);
-      localStorage.setItem("customers", JSON.stringify(this.customers));
+      this.item = customers
+
+
     } else {
       // add error 
     }
   }
 
 
-  getAllLocalStorageItems(key: string): any {
-    const item = localStorage.getItem(key);
-    if (item) {
-      return JSON.parse(item);
-    } else {
-      return [];
-    }
-  }
-
 
   deleteItem(email: string) {
-    const customers: Customer[] = this.getAllLocalStorageItems('customers')
+    let customers: Customer[] = this.item
     const afterItemDeletedCustomers = customers.filter(i => i.email !== email);
-    this.customers = afterItemDeletedCustomers;
-    localStorage.setItem("customers", JSON.stringify(this.customers));;
+    const updatedCustomers = afterItemDeletedCustomers;
+    // localStorage.setItem("customers", JSON.stringify(updatedCustomers));
+    this.item=updatedCustomers
   }
 
 
   deleteAllStorageItems(key: string): void {
     localStorage.removeItem(key);
+    this.item=[]
   }
 
 
 
   updateItem(email: string, customer: Customer) {
-    const customers: Customer[] = this.getAllLocalStorageItems('customers')
+    let customers: Customer[] = this.item
     const customerExist = customers.findIndex(i => i.email === email);
     if (customerExist) {
       if (!this.isItemUnique(customer)) {
-        this.customers[customerExist] = customer;
-        localStorage.setItem("customers", JSON.stringify(this.customers));
+        customers[customerExist] = customer;
+        // localStorage.setItem("customers", JSON.stringify(customers));
+        this.item=customers
       } else {
         // add error
       }
@@ -63,7 +77,7 @@ export class LocalStorageService {
   }
 
   findItem(email: string) {
-    const customers: Customer[] = this.getAllLocalStorageItems('customers')
+    let customers: Customer[] = this.item
 
     return customers.find(i => i.email === email);
   }
@@ -72,14 +86,14 @@ export class LocalStorageService {
 
 
   isItemUnique(customer: Customer): boolean {
-    const customers: Customer[] = this.getAllLocalStorageItems('customers')
+    let customers: Customer[] = this.item
     return !customers.some(c => c.firstName === customer.firstName && c.lastName === customer.lastName &&
       c.dateOfBirth === customer.dateOfBirth);
   }
 
 
   isEmailUnique(email: string): boolean {
-    const customers: Customer[] = this.getAllLocalStorageItems('customers')
+    let customers: Customer[] = this.item
     return !customers.some(c => c.email === email);
   }
 

@@ -2,40 +2,72 @@
 <div (click)="addUser2()">user2</div>
 <div (click)="showLocal()">showlocal</div>
 <div (click)="onSubmit()">submit</div>
+<div (click)="clearAll()">clear</div>
 
+<div>search here:
+    <input [(ngModel)]="playerName">
+ </div>
+ <div (click)="test1()">searchh</div>
 
 <form [formGroup]="customerForm">
-    <div>
-      <label>
-        FirstName:
-        <input formControlName="firstName" placeholder="Your firstName">
-      </label>
-    </div>
-    <div>
-      <label>
-        Lastname:
-        <input formControlName="lastName" placeholder="Your lastName">
-      </label>
-    </div>
-    <div>
-      <label>
-        Phone:
-        <input formControlName="phoneNumber" placeholder="Your phoneNumber">
-      </label>
-    </div>
-    <div>
-      <label>
-        Email:
-        <input formControlName="email" placeholder="Your email">
-      </label>
-    </div>
-    <div>
-      <label>
-        Bank Account Number:
-        <input formControlName="bankAccountNumber" placeholder="Your bankAccountNumber">
-      </label>
-    </div>
-    <button  (click)="onSubmit()" type="submit">Send</button>
-  </form>
+  <div>
+    <label>
+      FirstName:
+      <input formControlName="firstName" placeholder="Your firstName">
+    </label>
+  </div>
+  <div>
+    <label>
+      Lastname:
+      <input formControlName="lastName" placeholder="Your lastName">
+    </label>
+  </div>
+  <div>
+    <label>
+      Phone:
+      <input formControlName="phoneNumber" placeholder="Your phoneNumber">
+    </label>
+  </div>
+  <div>
+    <label>
+      Email:
+      <input formControlName="email" placeholder="Your email">
+    </label>
+  </div>
+  <div>
+    <label>
+      Bank Account Number:
+      <input formControlName="bankAccountNumber" placeholder="Your bankAccountNumber">
+    </label>
+  </div>
+  <button (click)="onSubmit()" type="submit">Send</button>
+</form>
 
-  <div class="bg-danger">sepehr</div>
+<div class="d-flex flex-column">
+
+  <div class="d-flex flex-row gap-2" *ngFor="let customer of AllCustomers">
+    <div class="d-flex flex-row justify-content-between gap-2">
+      <div>firstName</div>
+      <div>{{customer.firstName}}</div>
+    </div>
+    <div class="d-flex flex-row justify-content-between gap-2">
+      <div>lastName</div>
+      <div>{{customer.lastName}}</div>
+    </div>
+    <div class="d-flex flex-row justify-content-between gap-2">
+      <div>email</div>
+      <div>{{customer.email}}</div>
+    </div>
+    <div class="d-flex flex-row justify-content-between gap-2">
+      <div>phoneNumber</div>
+      <div>{{customer.phoneNumber}}</div>
+    </div>
+    <div class="d-flex flex-row justify-content-between gap-2">
+      <div>bankAccountNumber</div>
+      <div>{{customer.bankAccountNumber}}</div>
+    </div>
+
+    <div (click)="deleteItem(customer)">delete</div>
+    <div>edit</div>
+  </div>
+</div>
