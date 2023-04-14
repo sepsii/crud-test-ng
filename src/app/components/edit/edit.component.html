@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Favorite Animal</h1>
+<div mat-dialog-content>
+ 
+  <form [formGroup]="customerForm">
+    <div>
+      <label>
+        FirstName:
+        <input formControlName="firstName" placeholder="Your firstName">
+      </label>
+    </div>
+    <div>
+      <label>
+        Lastname:
+        <input formControlName="lastName" placeholder="Your lastName">
+      </label>
+    </div>
+    <div>
+      <label>
+        Phone:
+        <input formControlName="phoneNumber" placeholder="Your phoneNumber">
+      </label>
+    </div>
+    <div>
+      <label>
+        Email:
+        <input formControlName="email" placeholder="Your email" [readonly]="true">
+      </label>
+    </div>
+    <div>
+      <label>
+        Bank Account Number:
+        <input formControlName="bankAccountNumber" placeholder="Your bankAccountNumber">
+      </label>
+    </div>
+    <button (click)="onSubmit()" type="submit">Send</button>
+  </form>
+</div>

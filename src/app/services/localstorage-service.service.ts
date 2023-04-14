@@ -60,13 +60,14 @@ export class LocalStorageService {
 
 
   updateItem(email: string, customer: Customer) {
+    debugger
     let customers: Customer[] = this.item
     const customerExist = customers.findIndex(i => i.email === email);
     if (customerExist) {
-      if (!this.isItemUnique(customer)) {
+      if (this.isItemUnique(customer)) {
         customers[customerExist] = customer;
-        // localStorage.setItem("customers", JSON.stringify(customers));
         this.item=customers
+        this.item
       } else {
         // add error
       }
