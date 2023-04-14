@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CustomerService } from 'src/app/services/customer.service';
 import { EditComponent } from '../edit/edit.component';
 import { HotToastService } from '@ngneat/hot-toast';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-search',
@@ -13,7 +14,7 @@ export class SearchComponent implements OnInit {
   searchItem: string;
 
   constructor(private customerService: CustomerService,
-    public dialog: MatDialog, private toast: HotToastService) { }
+    public dialog: MatDialog, private toast: HotToastService,private notificationService:NotificationService) { }
 
   ngOnInit(): void {
   }
