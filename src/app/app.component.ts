@@ -5,6 +5,9 @@ import { Customer } from './models/customer.model';
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import { PhoneNumberValidator } from './validators/phone-number-validator';
 import { LocalStorageService } from './services/localstorage-service.service';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { EditComponent } from './components/edit/edit.component';
+import { faker } from '@faker-js/faker';
 
 
 @Component({
@@ -16,14 +19,15 @@ export class AppComponent implements OnInit {
   AllCustomers: Customer[]
   customerForm: FormGroup;
   customers: Customer[];
-  playerName: string;
+  searchItem: string;
 
-  constructor(private formBuilder: FormBuilder, private localStorageService: LocalStorageService) {
+  constructor(private formBuilder: FormBuilder,
+     private localStorageService: LocalStorageService, public dialog: MatDialog) {
 
     this.customerForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      // DateOfBirth: ['', Validators.required],
+      DateOfBirth: ['', Validators.required],
       phoneNumber: ['', [Validators.required, PhoneNumberValidator]],
       email: ['', [Validators.required, Validators.email]],
       bankAccountNumber: ['', Validators.required]
@@ -37,28 +41,15 @@ export class AppComponent implements OnInit {
     })
   }
 
-
-  addUser1() {
+  generaterRandomUser() {
     this.customerForm.reset()
-    this.customerForm.controls['phoneNumber'].setValue('202-456-1234')
-    this.customerForm.controls['firstName'].setValue('setare')
-    this.customerForm.controls['lastName'].setValue('sharifi')
-    this.customerForm.controls['email'].setValue('setare@gmail.com')
-    this.customerForm.controls['bankAccountNumber'].setValue('919414470')
+    this.customerForm.controls['phoneNumber'].setValue(faker.phone.phoneNumber('202-456-####'))
+    this.customerForm.controls['firstName'].setValue(faker.name.firstName())
+    this.customerForm.controls['lastName'].setValue(faker.name.lastName())
+    this.customerForm.controls['email'].setValue(faker.internet.email())
+    this.customerForm.controls['bankAccountNumber'].setValue(faker.datatype.number({ min: 1000000 }))
     console.log('user', this.customerForm);
   }
-
-
-  addUser2() {
-    this.customerForm.reset()
-    this.customerForm.controls['phoneNumber'].setValue('202-456-1414')
-    this.customerForm.controls['firstName'].setValue('sep')
-    this.customerForm.controls['lastName'].setValue('sharifi')
-    this.customerForm.controls['email'].setValue('sepehr@gmail.com')
-    this.customerForm.controls['bankAccountNumber'].setValue('919414470')
-    console.log('user', this.customerForm);
-  }
-
 
   showLocal() {
     const localStorageItem = localStorage.getItem('customers');
@@ -67,8 +58,11 @@ export class AppComponent implements OnInit {
 
 
   onSubmit() {
-    const customer: Customer = this.customerForm.value;
-    this.localStorageService.addItem(customer)
+    if (this.customerForm.valid) {
+
+      const customer: Customer = this.customerForm.value;
+      this.localStorageService.addItem(customer)
+    }
   }
 
   clearAll() {
@@ -77,15 +71,20 @@ export class AppComponent implements OnInit {
 
 
 
-  deleteItem(customer: Customer) {
-    this.localStorageService.deleteItem(customer.email)
-  }
 
 
-  test1() {
-    console.log('playername',this.playerName);
-    
-    return this.playerName;
+
+  search() {
+    const searchResult = this.localStorageService.findItem(this.searchItem)
+    if (searchResult) {
+      console.log('search result = ', searchResult);
+      console.log('form', this.customerForm);
+      this.customerForm.setValue(searchResult)
+
+    }
+    else {
+
+    }
 
   }
 
