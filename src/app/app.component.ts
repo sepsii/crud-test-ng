@@ -71,15 +71,21 @@ export class AppComponent implements OnInit {
 
 
   search() {
-    const searchResult = this.localStorageService.findItem(this.searchItem.trim())
-
-    if (searchResult) {
-      this.dialog.open(EditComponent, {
-        data: searchResult
-      })
+    if (this.searchItem) {
+      const searchResult = this.localStorageService.findItem(this.searchItem.trim())
+      if (searchResult) {
+        this.dialog.open(EditComponent, {
+          data: searchResult
+        })
+      }
+      else {
+        this.toast.error('couldnt find user', { duration: 1000 })
+      }
     }
+
     else {
-      this.toast.error('couldnt find user')
+      this.toast.error('please fill this with an email address', { duration: 1000 })
+
     }
   }
 

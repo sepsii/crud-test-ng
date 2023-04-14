@@ -7,6 +7,8 @@
       <label>
         FirstName:
         <input class="form-control my-2" formControlName="firstName" placeholder="Your firstName">
+        <div *ngIf="this.customerForm.controls['firstName'].errors &&this.customerForm.controls['firstName'].touched"
+        style="color:red;margin-top: 5px;">You should fill this field!</div>
       </label>
     </div>
     <div class="d-flex flex-column gap-2">
@@ -14,6 +16,8 @@
       <label>
         Lastname:
         <input class="form-control my-2" formControlName="lastName" placeholder="Your lastName">
+        <div *ngIf="this.customerForm.controls['lastName'].errors &&this.customerForm.controls['lastName'].touched"
+        style="color:red;margin-top: 5px;">You should fill this field!</div>
       </label>
     </div>
     <div class="d-flex flex-column gap-2">
@@ -21,6 +25,8 @@
       <label>
         Phone:
         <input class="form-control my-2" formControlName="phoneNumber" placeholder="Your phoneNumber" class="form-control my-2">
+        <div *ngIf="this.customerForm.controls['phoneNumber'].errors && this.customerForm.controls['phoneNumber'].touched"
+        style="color:red;margin-top: 5px;">{{getPhoneError()}}</div>
       </label>
     </div>
     <div class="d-flex flex-column gap-2">
@@ -35,6 +41,8 @@
       <label>
         Bank Account Number:
         <input class="form-control my-2" formControlName="bankAccountNumber" placeholder="Your bankAccountNumber">
+        <div *ngIf="this.customerForm.controls['bankAccountNumber'].errors && this.customerForm.controls['bankAccountNumber'].touched"
+        style="color:red;margin-top: 5px;">You should fill this field!</div>
       </label>
     </div>
     <div class="d-flex flex-column gap-2">
@@ -51,6 +59,6 @@
   </div>
       </label>
     </div>
-    <button class="btn btn-secondary" (click)="onSubmit()" type="submit">Send</button>
+    <button class="btn btn-primary" (click)="onSubmit()" type="submit">Send</button>
   </form>
 </div>
