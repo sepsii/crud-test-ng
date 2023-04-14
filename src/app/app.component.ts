@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
     console.log('local items', localStorageItem);
   }
 
-  
+
   clearAll() {
     this.localStorageService.deleteAllStorageItems('customers')
   }

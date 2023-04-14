@@ -4,7 +4,7 @@
         <div class="form-group row">
             <label class=" col-form-label mt-2">First Name</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" formControlName="firstName" placeholder="FirstName" >
+                <input type="text" class="form-control" formControlName="firstName" placeholder="FirstName">
             </div>
         </div>
         <div class="form-group row">
@@ -29,16 +29,22 @@
         <div class="form-group row">
             <label class=" col-form-label mt-2">Bank Account Number</label>
             <div class="col-sm-10">
-                <input type="tel" class="form-control" formControlName="bankAccountNumber" placeholder="Bank Account Number">
+                <input type="tel" class="form-control" formControlName="bankAccountNumber"
+                    placeholder="Bank Account Number">
             </div>
         </div>
 
 
 
         <div class="form-group row">
-            <label for="inputPassword3" class=" col-form-label mt-2">Date Of Birth</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" formControlName="dateOfBirth"  placeholder="Date of Birth">
+            <label class=" col-form-label mt-2">Date Of Birth</label>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="fill">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
             </div>
         </div>
 

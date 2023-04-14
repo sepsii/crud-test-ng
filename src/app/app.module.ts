@@ -9,6 +9,12 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { TableComponent } from './components/table/table.component';
 import { FormComponent } from './components/form/form.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+
+
 
 @NgModule({
   declarations: [
@@ -25,9 +31,13 @@ import { FormComponent } from './components/form/form.component';
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
+    MatDatepickerModule,
+    MatNativeDateModule ,
+    MatFormFieldModule,
+    MatInputModule
 
   ],
-  providers: [],
+  providers: [MatDatepickerModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

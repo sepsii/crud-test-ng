@@ -19,7 +19,7 @@ export class EditComponent {
     this.customerForm = this.formBuilder.group({
       firstName: [data.firstName, Validators.required],
       lastName: [data.lastName, Validators.required],
-      // DateOfBirth: ['', Validators.required],
+      dateOfBirth: [data.dateOfBirth, Validators.required],
       phoneNumber: [data.phoneNumber, [Validators.required, PhoneNumberValidator]],
       email: [data.email, [Validators.required, Validators.email]],
       bankAccountNumber: [data.bankAccountNumber, Validators.required]
@@ -32,4 +32,5 @@ export class EditComponent {
     this.dialogRef.close();
 
   }
+
 }
