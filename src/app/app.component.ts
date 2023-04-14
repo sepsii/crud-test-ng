@@ -21,8 +21,6 @@ export class AppComponent implements OnInit {
   AllCustomers: Customer[]
   customerForm: FormGroup;
   customers: Customer[];
-  searchItem: string;
-  searchedCustomer: Customer
 
 
   constructor(private formBuilder: FormBuilder,
@@ -54,10 +52,12 @@ export class AppComponent implements OnInit {
     this.customerForm.controls['firstName'].setValue(faker.name.firstName())
     this.customerForm.controls['lastName'].setValue(faker.name.lastName())
     this.customerForm.controls['email'].setValue(faker.internet.email())
-    this.customerForm.controls['dateOfBirth'].setValue(faker.date.birthdate({ min: 18, max: 65, mode: 'age' }))
-    this.customerForm.controls['bankAccountNumber'].setValue(faker.datatype.number({ min: 1000000 }))
-    this.customerService.addCustomer(this.customerForm.value),
-      this.toast.success('random user succesfully generated!!', { duration: 1000 });
+    this.customerForm.controls['dateOfBirth'].setValue(
+      new Date(faker.date.birthdate({ min: 18, max: 65, mode: 'age' })).setHours(0,0,0))
+    this.customerForm.controls['bankAccountNumber'].setValue(faker.datatype.number({ min: 1000000 })
+    )
+    this.customerService.addCustomer(this.customerForm.value)
+      // this.toast.success('random user succesfully generated!!', { duration: 1000 });
 
   }
 
@@ -70,23 +70,5 @@ export class AppComponent implements OnInit {
   }
 
 
-  search() {
-    if (this.searchItem) {
-      const searchResult = this.customerService.findCustomer(this.searchItem.trim())
-      if (searchResult) {
-        this.dialog.open(EditComponent, {
-          data: searchResult
-        })
-      }
-      else {
-        this.toast.error('couldnt find user', { duration: 1000 })
-      }
-    }
-
-    else {
-      this.toast.error('please fill this with an email address', { duration: 1000 })
-
-    }
-  }
 
 }

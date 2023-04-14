@@ -11,8 +11,8 @@ import { PhoneNumberValidator } from 'src/app/validators/phone-number-validator'
 })
 export class FormComponent implements OnInit, OnChanges {
   customerForm: FormGroup;
-  @Input() searchItem: Customer
-
+  formError: string
+  customer: Customer
 
   constructor(private formBuilder: FormBuilder,
     private customerService: CustomerService) {
@@ -20,7 +20,7 @@ export class FormComponent implements OnInit, OnChanges {
     this.customerForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      dateOfBirth: ['', Validators.required],
+      dateOfBirth: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, PhoneNumberValidator]],
       email: ['', [Validators.required, Validators.email]],
       bankAccountNumber: ['', Validators.required]
@@ -28,8 +28,8 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    console.log('valid',this.customerForm.valid);
-    
+    console.log('valid', this.customerForm.valid);
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -41,10 +41,27 @@ export class FormComponent implements OnInit, OnChanges {
     }
   }
   onSubmit() {
+    this.customer = this.customerForm.value;
+    this.trimAllFields()
+
+
     if (this.customerForm.valid) {
 
-      const customer: Customer = this.customerForm.value;
-      this.customerService.addCustomer(customer)
+      if (this.customerService.isEmailUnique(this.customerForm.controls['email'].value) &&
+        this.customerService.isItemUnique(this.customerForm.value)) {
+
+        this.customerService.addCustomer(this.customer)
+        this.customerForm.reset()
+        this.formError = null
+      }
+      else {
+        if (!this.customerService.isEmailUnique(this.customerForm.controls['email'].value)) {
+          this.formError = 'this email already exists'
+        }
+        else if (!this.customerService.isItemUnique(this.customerForm.value)) {
+          this.formError = 'this user with this first name and last name and birthday already exists'
+        }
+      }
     }
     else {
       this.customerForm.markAllAsTouched();
@@ -76,5 +93,15 @@ export class FormComponent implements OnInit, OnChanges {
 
   isButtonDisabled() {
     return !this.customerForm.valid
+  }
+
+
+
+  trimAllFields() {
+    this.customer.firstName = this.customer.firstName.trim()
+    this.customer.lastName = this.customer.lastName.trim()
+    this.customer.bankAccountNumber = this.customer.bankAccountNumber.trim()
+    this.customer.email = this.customer.email.trim()
+    this.customer.phoneNumber = this.customer.phoneNumber.trim()
   }
 }

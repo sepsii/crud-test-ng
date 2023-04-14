@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { HotToastModule } from '@ngneat/hot-toast';
+import { SearchComponent } from './components/search/search.component';
 
 
 
@@ -24,6 +25,7 @@ import { HotToastModule } from '@ngneat/hot-toast';
     EditComponent,
     TableComponent,
     FormComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,

@@ -32,7 +32,7 @@ export class TableComponent implements OnInit {
 
   }
   getDate(date) {
-    const format = 'dd/MM/yyyy';
+    const format = 'MM/dd/yyyy';
     const locale = 'en-US';
     const formattedDate = formatDate(date, format, locale);
     return formattedDate

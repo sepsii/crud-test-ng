@@ -30,7 +30,7 @@
         <div class="form-group row">
             <label class=" col-form-label mt-2">Phone Number</label>
             <div class="col-sm-10">
-                <input type="tel"  class="form-control" formControlName="phoneNumber" placeholder="PhoneNumber">
+                <input type="tel" class="form-control" formControlName="phoneNumber" placeholder="PhoneNumber">
                 <div *ngIf="this.customerForm.controls['phoneNumber'].errors && this.customerForm.controls['phoneNumber'].touched"
                     style="color:red;margin-top: 5px;">{{getPhoneError()}}</div>
             </div>
@@ -40,11 +40,10 @@
             <div class="col-sm-10">
                 <input type="tel" class="form-control" formControlName="bankAccountNumber"
                     placeholder="Bank Account Number">
-                    <div *ngIf="this.customerForm.controls['bankAccountNumber'].errors && this.customerForm.controls['bankAccountNumber'].touched"
+                <div *ngIf="this.customerForm.controls['bankAccountNumber'].errors && this.customerForm.controls['bankAccountNumber'].touched"
                     style="color:red;margin-top: 5px;">You should fill this field!</div>
             </div>
         </div>
-
 
 
         <div class="form-group row">
@@ -57,13 +56,14 @@
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
             </div>
-            
+
         </div>
 
 
         <div class="form-group row">
             <div class="col-sm-10 mt-2">
-                <button type="submit" (click)="onSubmit()"  class="btn btn-primary">Submit</button>
+                <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
+                <div *ngIf="formError">{{formError}}</div>
             </div>
         </div>
     </div>

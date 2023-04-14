@@ -3,6 +3,7 @@ import { Customer } from '../models/customer.model';
 import { HotToastService } from '@ngneat/hot-toast';
 import { BehaviorSubject, catchError } from 'rxjs';
 import { LocalStorageService } from './localstorage.service';
+import { DatePipe } from '@angular/common';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { LocalStorageService } from './localstorage.service';
 })
 export class CustomerService {
 
-  constructor(private toast: HotToastService, private localStorageService: LocalStorageService) {
+  constructor(private localStorageService: LocalStorageService, ) {
 
   }
 
@@ -23,10 +24,6 @@ export class CustomerService {
 
     if (this.isEmailUnique(customer.email) && this.isItemUnique(customer)) {
       this.localStorageService.add(customer)
-
-
-    } else {
-      throw new Error("error test")
     }
   }
 
@@ -72,8 +69,11 @@ export class CustomerService {
     else {
 
       let customers: Customer[] = this.localStorageService.get()
+
+
+
       return !customers.some(c => c.firstName === customer.firstName && c.lastName === customer.lastName &&
-        c.dateOfBirth === customer.dateOfBirth);
+        new Date(c.dateOfBirth).getTime() === customer.dateOfBirth.getTime());
     }
   }
 
@@ -83,6 +83,10 @@ export class CustomerService {
     return !customers.some(c => c.email === email);
   }
 
+  getFormatedDate(date: Date, format: string) {
+    const datePipe = new DatePipe('en-US');
+    Date()
+    return datePipe.transform(date, format);
 
-
+  }
 }
