@@ -20,14 +20,16 @@ export class AppComponent implements OnInit {
   customerForm: FormGroup;
   customers: Customer[];
   searchItem: string;
+  searchedCustomer: Customer
+
 
   constructor(private formBuilder: FormBuilder,
-     private localStorageService: LocalStorageService, public dialog: MatDialog) {
+    private localStorageService: LocalStorageService, public dialog: MatDialog) {
 
     this.customerForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      DateOfBirth: ['', Validators.required],
+      dateOfBirth: ['', Validators.required],
       phoneNumber: ['', [Validators.required, PhoneNumberValidator]],
       email: ['', [Validators.required, Validators.email]],
       bankAccountNumber: ['', Validators.required]
@@ -41,51 +43,40 @@ export class AppComponent implements OnInit {
     })
   }
 
+
   generaterRandomUser() {
     this.customerForm.reset()
     this.customerForm.controls['phoneNumber'].setValue(faker.phone.phoneNumber('202-456-####'))
     this.customerForm.controls['firstName'].setValue(faker.name.firstName())
     this.customerForm.controls['lastName'].setValue(faker.name.lastName())
     this.customerForm.controls['email'].setValue(faker.internet.email())
+    this.customerForm.controls['dateOfBirth'].setValue(faker.date.birthdate({ min: 18, max: 65, mode: 'age' }))
     this.customerForm.controls['bankAccountNumber'].setValue(faker.datatype.number({ min: 1000000 }))
-    console.log('user', this.customerForm);
+    this.localStorageService.addItem(this.customerForm.value)
   }
+
 
   showLocal() {
     const localStorageItem = localStorage.getItem('customers');
     console.log('local items', localStorageItem);
   }
 
-
-  onSubmit() {
-    if (this.customerForm.valid) {
-
-      const customer: Customer = this.customerForm.value;
-      this.localStorageService.addItem(customer)
-    }
-  }
-
+  
   clearAll() {
     this.localStorageService.deleteAllStorageItems('customers')
   }
 
 
-
-
-
-
   search() {
     const searchResult = this.localStorageService.findItem(this.searchItem)
     if (searchResult) {
-      console.log('search result = ', searchResult);
-      console.log('form', this.customerForm);
-      this.customerForm.setValue(searchResult)
 
+      // this.customerForm.setValue(searchResult)
+      this.searchedCustomer = searchResult
     }
     else {
-
     }
-
   }
+
 
 }
