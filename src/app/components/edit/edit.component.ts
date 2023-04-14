@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Customer } from 'src/app/models/customer.model';
-import { LocalStorageService } from 'src/app/services/localstorage-service.service';
+import { CustomerService } from 'src/app/services/customer.service';
 import { PhoneNumberValidator } from 'src/app/validators/phone-number-validator';
 @Component({
   selector: 'app-edit',
@@ -13,7 +13,8 @@ export class EditComponent {
   customer: Customer
   customerForm: FormGroup;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data, private formBuilder: FormBuilder, private localStorageService: LocalStorageService
+  constructor(@Inject(MAT_DIALOG_DATA) public data, private formBuilder: FormBuilder, 
+  private customerService: CustomerService
     , private dialogRef: MatDialogRef<EditComponent>,) {
 
     this.customerForm = this.formBuilder.group({
@@ -27,7 +28,7 @@ export class EditComponent {
   }
   onSubmit() {
     if (this.customerForm.valid) {
-      this.localStorageService.updateItem(this.customerForm.controls['email'].value, this.customerForm.value)
+      this.customerService.updateCustomer(this.customerForm.controls['email'].value, this.customerForm.value)
       this.dialogRef.close();
     }
     else {

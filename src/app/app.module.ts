@@ -17,12 +17,13 @@ import { HotToastModule } from '@ngneat/hot-toast';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     EditComponent,
     TableComponent,
-    FormComponent
+    FormComponent,
   ],
   imports: [
     BrowserModule,

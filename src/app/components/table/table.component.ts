@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Customer } from 'src/app/models/customer.model';
-import { LocalStorageService } from 'src/app/services/localstorage-service.service';
 import { EditComponent } from '../edit/edit.component';
 import { formatDate } from '@angular/common';
 import { HotToastService } from '@ngneat/hot-toast';
+import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
   selector: 'app-table',
@@ -15,7 +15,7 @@ export class TableComponent implements OnInit {
   @Input() tableData: Customer[]
 
 
-  constructor(private localStorageService: LocalStorageService, public dialog: MatDialog,
+  constructor(private customerService: CustomerService, public dialog: MatDialog,
     private toast: HotToastService
     ) { }
 
@@ -27,7 +27,7 @@ export class TableComponent implements OnInit {
     })
   }
   deleteItem(customer: Customer) {
-    this.localStorageService.deleteItem(customer.email)
+    this.customerService.deleteCustomer(customer.email)
     this.toast.success('Customer deleted!!', { duration: 1000 });
 
   }

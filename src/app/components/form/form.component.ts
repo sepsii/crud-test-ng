@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Customer } from 'src/app/models/customer.model';
-import { LocalStorageService } from 'src/app/services/localstorage-service.service';
+import { CustomerService } from 'src/app/services/customer.service';
 import { PhoneNumberValidator } from 'src/app/validators/phone-number-validator';
 
 @Component({
@@ -15,7 +15,7 @@ export class FormComponent implements OnInit, OnChanges {
 
 
   constructor(private formBuilder: FormBuilder,
-    private localStorageService: LocalStorageService) {
+    private customerService: CustomerService) {
 
     this.customerForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -34,7 +34,6 @@ export class FormComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['searchItem'].currentValue) {
-      console.log('yayy', changes['searchItem']);
       const customer = changes['searchItem'].currentValue
       this.customerForm.setValue(customer)
 
@@ -45,7 +44,7 @@ export class FormComponent implements OnInit, OnChanges {
     if (this.customerForm.valid) {
 
       const customer: Customer = this.customerForm.value;
-      this.localStorageService.addItem(customer)
+      this.customerService.addCustomer(customer)
     }
     else {
       this.customerForm.markAllAsTouched();

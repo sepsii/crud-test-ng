@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { OnInit } from '@angular/core/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Customer } from './models/customer.model';
-import { PhoneNumberUtil } from 'google-libphonenumber';
 import { PhoneNumberValidator } from './validators/phone-number-validator';
-import { LocalStorageService } from './services/localstorage-service.service';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { faker } from '@faker-js/faker';
 import { HotToastService } from '@ngneat/hot-toast';
 import { EditComponent } from './components/edit/edit.component';
+import { CustomerService } from './services/customer.service';
+import { LocalStorageService } from './services/localstorage.service';
 
 
 
@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
+    private customerService: CustomerService,
     private localStorageService: LocalStorageService,
     public dialog: MatDialog,
     private toast: HotToastService
@@ -42,7 +43,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.AllCustomers = this.localStorageService.getAllLocalStorageItems('customers')
     this.localStorageService.itemSubject.subscribe(res => {
       this.AllCustomers = res
     })
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit {
     this.customerForm.controls['email'].setValue(faker.internet.email())
     this.customerForm.controls['dateOfBirth'].setValue(faker.date.birthdate({ min: 18, max: 65, mode: 'age' }))
     this.customerForm.controls['bankAccountNumber'].setValue(faker.datatype.number({ min: 1000000 }))
-    this.localStorageService.addItem(this.customerForm.value),
+    this.customerService.addCustomer(this.customerForm.value),
       this.toast.success('random user succesfully generated!!', { duration: 1000 });
 
   }
@@ -72,7 +72,7 @@ export class AppComponent implements OnInit {
 
   search() {
     if (this.searchItem) {
-      const searchResult = this.localStorageService.findItem(this.searchItem.trim())
+      const searchResult = this.customerService.findCustomer(this.searchItem.trim())
       if (searchResult) {
         this.dialog.open(EditComponent, {
           data: searchResult
