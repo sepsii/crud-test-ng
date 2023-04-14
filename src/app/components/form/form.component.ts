@@ -28,6 +28,8 @@ export class FormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+    console.log('valid',this.customerForm.valid);
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -40,12 +42,40 @@ export class FormComponent implements OnInit, OnChanges {
     }
   }
   onSubmit() {
-    console.log('customer formmm', this.customerForm);
-
     if (this.customerForm.valid) {
 
       const customer: Customer = this.customerForm.value;
       this.localStorageService.addItem(customer)
     }
+    else {
+      this.customerForm.markAllAsTouched();
+
+    }
+  }
+
+  getEmailError() {
+    if (this.customerForm.controls['email'].errors['email']) {
+
+      return 'Please write a valid email address'
+    }
+    else {
+      return 'You should fill this field!'
+    }
+
+  }
+  getPhoneError() {
+
+    if (this.customerForm.controls['phoneNumber'].errors['invalidphone']) {
+
+      return 'Please write a valid phone number eg: 202-456-7698'
+    }
+    else {
+      return 'You should fill this field!'
+    }
+
+  }
+
+  isButtonDisabled() {
+    return !this.customerForm.valid
   }
 }

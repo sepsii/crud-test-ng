@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Customer } from '../models/customer.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class LocalStorageService {
   // private customers: Customer[] = [];
 
-  constructor() { 
+  constructor(private toast: HotToastService) {
+
   }
   itemSubject = new BehaviorSubject(this.item)
 
@@ -23,14 +25,15 @@ export class LocalStorageService {
       return JSON.parse(item);
     } else {
       return [];
-    }  }
+    }
+  }
 
 
 
 
   addItem(customer: Customer) {
 
-    const customers= this.item
+    const customers = this.item
     if (this.isEmailUnique(customer.email) && this.isItemUnique(customer)) {
       customers.push(customer);
       this.item = customers
@@ -47,32 +50,32 @@ export class LocalStorageService {
     let customers: Customer[] = this.item
     const afterItemDeletedCustomers = customers.filter(i => i.email !== email);
     const updatedCustomers = afterItemDeletedCustomers;
-    // localStorage.setItem("customers", JSON.stringify(updatedCustomers));
-    this.item=updatedCustomers
+    this.item = updatedCustomers
   }
 
 
   deleteAllStorageItems(key: string): void {
     localStorage.removeItem(key);
-    this.item=[]
+    this.item = []
   }
 
 
 
   updateItem(email: string, customer: Customer) {
     let customers: Customer[] = this.item
-    const customerExist = customers.findIndex(i => i.email === email);
-    if (customerExist !=null) {
-      if (this.isItemUnique(customer)) {
-        customers[customerExist] = customer;
-        this.item=customers
+    const currentCustomer = customers.findIndex(i => i.email === email);
+    const CustomersWithoutCurrentCustomer = customers.filter(i => i.email != email)
+    if (currentCustomer != null) {
+      if (this.isItemUnique(customer, CustomersWithoutCurrentCustomer)) {
+        customers[currentCustomer] = customer;
+        this.item = customers
         this.item
       } else {
-        // add error
+        this.toast.error('user already exist')
       }
 
     } else {
-      // add error 
+      this.toast.error('could not find user')
     }
   }
 
@@ -85,10 +88,17 @@ export class LocalStorageService {
 
 
 
-  isItemUnique(customer: Customer): boolean {
-    let customers: Customer[] = this.item
-    return !customers.some(c => c.firstName === customer.firstName && c.lastName === customer.lastName &&
-      c.dateOfBirth === customer.dateOfBirth);
+  isItemUnique(customer: Customer, customers?: Customer[]): boolean {
+    if (customers) {
+      return !customers.some(c => c.firstName === customer.firstName && c.lastName === customer.lastName &&
+        c.dateOfBirth === customer.dateOfBirth);
+    }
+    else {
+
+      let customers: Customer[] = this.item
+      return !customers.some(c => c.firstName === customer.firstName && c.lastName === customer.lastName &&
+        c.dateOfBirth === customer.dateOfBirth);
+    }
   }
 
 

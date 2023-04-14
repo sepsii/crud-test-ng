@@ -6,8 +6,10 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 import { PhoneNumberValidator } from './validators/phone-number-validator';
 import { LocalStorageService } from './services/localstorage-service.service';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { EditComponent } from './components/edit/edit.component';
 import { faker } from '@faker-js/faker';
+import { HotToastService } from '@ngneat/hot-toast';
+import { EditComponent } from './components/edit/edit.component';
+
 
 
 @Component({
@@ -24,7 +26,10 @@ export class AppComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder,
-    private localStorageService: LocalStorageService, public dialog: MatDialog) {
+    private localStorageService: LocalStorageService,
+    public dialog: MatDialog,
+    private toast: HotToastService
+  ) {
 
     this.customerForm = this.formBuilder.group({
       firstName: ['', Validators.required],
@@ -43,40 +48,39 @@ export class AppComponent implements OnInit {
     })
   }
 
-
   generaterRandomUser() {
     this.customerForm.reset()
-    this.customerForm.controls['phoneNumber'].setValue(faker.phone.phoneNumber('202-456-####'))
+    this.customerForm.controls['phoneNumber'].setValue(faker.phone.number('202-456-####'))
     this.customerForm.controls['firstName'].setValue(faker.name.firstName())
     this.customerForm.controls['lastName'].setValue(faker.name.lastName())
     this.customerForm.controls['email'].setValue(faker.internet.email())
     this.customerForm.controls['dateOfBirth'].setValue(faker.date.birthdate({ min: 18, max: 65, mode: 'age' }))
     this.customerForm.controls['bankAccountNumber'].setValue(faker.datatype.number({ min: 1000000 }))
-    this.localStorageService.addItem(this.customerForm.value)
+    this.localStorageService.addItem(this.customerForm.value),
+      this.toast.success('random user succesfully generated!!', { duration: 1000 });
+
   }
 
-
-  showLocal() {
-    const localStorageItem = localStorage.getItem('customers');
-    console.log('local items', localStorageItem);
-  }
 
 
   clearAll() {
     this.localStorageService.deleteAllStorageItems('customers')
+    this.toast.success('local storage cleared!!', { duration: 1000 });
+
   }
 
 
   search() {
-    const searchResult = this.localStorageService.findItem(this.searchItem)
-    if (searchResult) {
+    const searchResult = this.localStorageService.findItem(this.searchItem.trim())
 
-      // this.customerForm.setValue(searchResult)
-      this.searchedCustomer = searchResult
+    if (searchResult) {
+      this.dialog.open(EditComponent, {
+        data: searchResult
+      })
     }
     else {
+      this.toast.error('couldnt find user')
     }
   }
-
 
 }

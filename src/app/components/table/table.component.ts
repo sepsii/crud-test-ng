@@ -4,6 +4,7 @@ import { Customer } from 'src/app/models/customer.model';
 import { LocalStorageService } from 'src/app/services/localstorage-service.service';
 import { EditComponent } from '../edit/edit.component';
 import { formatDate } from '@angular/common';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-table',
@@ -14,7 +15,9 @@ export class TableComponent implements OnInit {
   @Input() tableData: Customer[]
 
 
-  constructor(private localStorageService: LocalStorageService, public dialog: MatDialog) { }
+  constructor(private localStorageService: LocalStorageService, public dialog: MatDialog,
+    private toast: HotToastService
+    ) { }
 
   ngOnInit(): void {
   }
@@ -25,6 +28,8 @@ export class TableComponent implements OnInit {
   }
   deleteItem(customer: Customer) {
     this.localStorageService.deleteItem(customer.email)
+    this.toast.success('Customer deleted!!', { duration: 1000 });
+
   }
   getDate(date) {
     const format = 'dd/MM/yyyy';
