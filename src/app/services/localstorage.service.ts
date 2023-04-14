@@ -11,7 +11,6 @@ import { v4 as uuidv4 } from 'uuid';
 export class LocalStorageService {
 
   constructor(private toast: HotToastService) {
-    console.log('uuidv4();',uuidv4());
     
   }
 
