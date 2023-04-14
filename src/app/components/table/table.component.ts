@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Customer } from 'src/app/models/customer.model';
 import { LocalStorageService } from 'src/app/services/localstorage-service.service';
 import { EditComponent } from '../edit/edit.component';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-table',
@@ -10,10 +11,10 @@ import { EditComponent } from '../edit/edit.component';
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit {
-@Input() tableData : Customer[]
+  @Input() tableData: Customer[]
 
 
-  constructor(  private localStorageService: LocalStorageService, public dialog: MatDialog) { }
+  constructor(private localStorageService: LocalStorageService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -24,5 +25,12 @@ export class TableComponent implements OnInit {
   }
   deleteItem(customer: Customer) {
     this.localStorageService.deleteItem(customer.email)
+  }
+  getDate(date) {
+    const format = 'dd/MM/yyyy';
+    const locale = 'en-US';
+    const formattedDate = formatDate(date, format, locale);
+    return formattedDate
+
   }
 }

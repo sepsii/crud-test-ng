@@ -18,7 +18,7 @@
         <td>{{item.email}}</td>
         <td>{{item.phoneNumber}}</td>
         <td>{{item.bankAccountNumber}}</td>
-        <td>{{item.dateOfBirth}}</td>
+        <td>{{getDate(item.dateOfBirth)}}</td>
         <td (click)="openDialog(item)">edit</td>
         <td (click)="deleteItem(item)">delete</td>
       </tr>
