@@ -15,26 +15,16 @@ export class CustomerService {
 
   }
 
-
-
-
-
-
   addCustomer(customer: Customer) {
-
     if (this.isEmailUnique(customer.email) && this.isItemUnique(customer)) {
       this.localStorageService.add(customer)
     }
   }
 
 
-
   deleteCustomer(email: string) {
-
     this.localStorageService.delete(email)
-
   }
-
 
 
   updateCustomer(email: string, customer: Customer) {
@@ -46,7 +36,6 @@ export class CustomerService {
         this.localStorageService.update(customer)
       } else {
       }
-
     } else {
     }
   }

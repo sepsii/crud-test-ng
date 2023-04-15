@@ -9,7 +9,7 @@ import { PhoneNumberValidator } from 'src/app/validators/phone-number-validator'
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit, OnChanges {
+export class FormComponent implements OnInit {
   customerForm: FormGroup;
   formError: string
   customer: Customer
@@ -32,14 +32,7 @@ export class FormComponent implements OnInit, OnChanges {
 
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['searchItem'].currentValue) {
-      const customer = changes['searchItem'].currentValue
-      this.customerForm.setValue(customer)
 
-
-    }
-  }
   onSubmit() {
     this.customer = this.customerForm.value;
     this.trimAllFields()
@@ -65,9 +58,9 @@ export class FormComponent implements OnInit, OnChanges {
     }
     else {
       this.customerForm.markAllAsTouched();
-
     }
   }
+
 
   getEmailError() {
     if (this.customerForm.controls['email'].errors['email']) {

@@ -12,9 +12,9 @@ import { PhoneNumberValidator } from 'src/app/validators/phone-number-validator'
 export class EditComponent {
   customer: Customer
   customerForm: FormGroup;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data, private formBuilder: FormBuilder, 
-  private customerService: CustomerService
+  formError: string
+  constructor(@Inject(MAT_DIALOG_DATA) public data, private formBuilder: FormBuilder,
+    private customerService: CustomerService
     , private dialogRef: MatDialogRef<EditComponent>,) {
 
     this.customerForm = this.formBuilder.group({
@@ -28,8 +28,15 @@ export class EditComponent {
   }
   onSubmit() {
     if (this.customerForm.valid) {
-      this.customerService.updateCustomer(this.customerForm.controls['email'].value, this.customerForm.value)
-      this.dialogRef.close();
+      if (this.customerService.isItemUnique(this.customerForm.value)) {
+
+        this.customerService.updateCustomer(this.customerForm.controls['email'].value, this.customerForm.value)
+        this.dialogRef.close();
+      }
+      else {
+        this.formError = 'this user with this first name and last name and birthday already exists'
+
+      }
     }
     else {
       this.customerForm.markAllAsTouched();

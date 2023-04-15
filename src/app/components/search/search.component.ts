@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerService } from 'src/app/services/customer.service';
 import { EditComponent } from '../edit/edit.component';
-import { HotToastService } from '@ngneat/hot-toast';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
@@ -14,7 +13,7 @@ export class SearchComponent implements OnInit {
   searchItem: string;
 
   constructor(private customerService: CustomerService,
-    public dialog: MatDialog, private toast: HotToastService,private notificationService:NotificationService) { }
+    public dialog: MatDialog, private notificationService: NotificationService) { }
 
   ngOnInit(): void {
   }
@@ -28,12 +27,12 @@ export class SearchComponent implements OnInit {
         })
       }
       else {
-        this.toast.error('couldnt find user', { duration: 1000 })
+        this.notificationService.error('couldnt find user', 1000)
       }
     }
 
     else {
-      this.toast.error('please fill this with an email address', { duration: 1000 })
+      this.notificationService.error('please fill this with an email address', 1000)
 
     }
   }

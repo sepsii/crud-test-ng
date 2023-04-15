@@ -60,5 +60,6 @@
       </label>
     </div>
     <button class="btn btn-primary" (click)="onSubmit()" type="submit">Send</button>
+    <div class="error" *ngIf="formError">{{formError}}</div>
   </form>
 </div>

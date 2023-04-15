@@ -7,11 +7,11 @@ import { HotToastService } from '@ngneat/hot-toast';
 export class NotificationService {
 
   constructor(private toast: HotToastService) { }
-  success(text, duration) {
+  success(text: string, duration: number) {
     this.toast.success(text, { duration: duration })
   }
 
-  error(text, duration) {
+  error(text: string, duration: number) {
     this.toast.error(text, { duration: duration })
 
   }

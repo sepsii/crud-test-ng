@@ -41,9 +41,9 @@ export class LocalStorageService {
   }
 
 
-  delete(id) {
+  delete(email) {
     let customers: Customer[] = this.get()
-    const afterItemDeletedCustomers = customers.filter(i => i.email !== id);
+    const afterItemDeletedCustomers = customers.filter(i => i.email !== email);
     const updatedCustomers = afterItemDeletedCustomers;
     this.addAll(updatedCustomers)
   }
@@ -64,7 +64,7 @@ export class LocalStorageService {
 
   }
 
-crr
+
 
 
 

@@ -96,35 +96,21 @@ describe('TableComponent', () => {
     expect(headerItems[7].textContent).toContain('Delete')
   });
 
+  
   it('should open edit component when on edit is called', () => {
     const openDialogSpy = spyOn(component.dialog, 'open')
     component.openDialog(mockData[0])
     expect(openDialogSpy).toHaveBeenCalled();
   });
 
-  // it('should delete data if delete is called', () => {
-  //   let firstTableRow = fixture.nativeElement.querySelectorAll('tr')[1].querySelectorAll('td')
 
-  //   expect(firstTableRow[0].textContent).toContain('sepehr')
-  //   expect(firstTableRow[1].textContent).toContain('sharifi')
-  //   expect(firstTableRow[2].textContent).toContain('sepehr@gmail.com')
-  //   expect(firstTableRow[3].textContent).toContain('202-456-7894')
-  //   expect(firstTableRow[4].textContent).toContain('123456789')
-  //   expect(firstTableRow[5].textContent).toContain('01/01/1994')
-  //   expect(firstTableRow[6].textContent).toContain('edit')
-  //   expect(firstTableRow[7].textContent).toContain('delete')
-  //   const spy = spyOn(service, 'deleteCustomer').and.returnValue(mockData[1]);
-  //   const deleteFirstItem = fixture.nativeElement.querySelectorAll('tr')[1].querySelectorAll('td')[7]
-  //   deleteFirstItem.click()
-  //   component.deleteItem(mockData[0])
-  //   fixture.detectChanges()
-  //   firstTableRow = fixture.nativeElement.querySelectorAll('tr')[1].querySelectorAll('td')
-  //   expect(firstTableRow[0].textContent).toContain('setare')
-
-
-
-
-  // });
+  it('should delete data if delete is called', () => {
+    const userServiceSpy = spyOn(service, 'deleteCustomer').and.callThrough();
+    expect(userServiceSpy).not.toHaveBeenCalled()
+    const firstTableRow = fixture.nativeElement.querySelectorAll('tr')[1].querySelectorAll('td')
+    firstTableRow[7].click()
+    expect(userServiceSpy).toHaveBeenCalled()
+  });
 
 
 });
